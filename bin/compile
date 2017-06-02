@@ -93,16 +93,16 @@ elif [ -d $cache_dir/node/node_modules ]; then
   npm prune --production=false 2>&1 | indent
   
   #prune will delete the bower / gulp modules, this adds it back
-  if [ -d $cache_dir/node/node_modules/bower ]; then
-    status "Copying bower from cache"
-    cp -r $cache_dir/node/node_modules/bower $build_dir/node_modules
-    cp -r $cache_dir/node/node_modules/.bin/bower $build_dir/node_modules/.bin
-  fi
-  if [ -d $cache_dir/node/node_modules/gulp ]; then
-  status "Copying gulp from cache"
-    cp -r $cache_dir/node/node_modules/gulp $build_dir/node_modules
-    cp -r $cache_dir/node/node_modules/.bin/gulp $build_dir/node_modules/.bin
-  fi
+#  if [ -d $cache_dir/node/node_modules/bower ]; then
+#    status "Copying bower from cache"
+#    cp -r $cache_dir/node/node_modules/bower $build_dir/node_modules
+#    cp -r $cache_dir/node/node_modules/.bin/bower $build_dir/node_modules/.bin
+#  fi
+#  if [ -d $cache_dir/node/node_modules/gulp ]; then
+#  status "Copying gulp from cache"
+#    cp -r $cache_dir/node/node_modules/gulp $build_dir/node_modules
+#    cp -r $cache_dir/node/node_modules/.bin/gulp $build_dir/node_modules/.bin
+#  fi
 
   if [ -f $cache_dir/node/.heroku/node-version ] && [ $(cat $cache_dir/node/.heroku/node-version) != "$node_version" ]; then
     status "Node version changed since last build; rebuilding dependencies"
@@ -126,8 +126,10 @@ if [ -f $build_dir/bower.json ]; then
   status "Found bower.json - Updating bower locally"
   
   if [ -e node_modules/.bin/bower ]; then
+    status "found bower in node_modules/.bin folder"
     npm update bower 2>&1 | indent
   else
+    status "Bower wasnt found, installing it..."
     npm install bower 2>&1 | indent
   fi
 
